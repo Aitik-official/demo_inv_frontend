@@ -114,6 +114,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ onChange, onPreview }) => {
           totalCollection += collection;
         });
         // Summary fields
+          // Filtered data
         const totalShowVal = Number(row["TOTAL SHOW"]) || totalShow;
         const totalAudVal = Number(row["TOTAL AUDIENCE"]) || totalAud;
         const totalCollectionVal = Number(row["TOTAL COLLECTION"]) || totalCollection;

@@ -45,6 +45,7 @@ export function parseInvoiceExcel(file: File): Promise<InvoiceData[]> {
       const json: any[][] = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
       // Find header row (the one with "BILL TO", "ADDRESS", etc.)
+      
       const headerRowIdx = json.findIndex(row => row.some((cell: string) => normalizeHeader(cell) === 'bill to'));
       const headerRow = json[headerRowIdx];
       const headerRowNorm = headerRow.map(normalizeHeader);

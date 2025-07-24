@@ -36,6 +36,7 @@ import { createRoot } from 'react-dom/client';
 // The component will use these fields for all calculations and display.
 
 // Helper to convert number to words (simple, for INR)
+  // Filtered data
 function numberToWords(num: number) {
   if (isNaN(num)) return "";
   if (num === 0) return "Zero";

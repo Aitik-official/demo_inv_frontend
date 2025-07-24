@@ -138,6 +138,7 @@ const InvoicePreview = ({ data = {} as InvoiceData, showDownloadButton = true, i
   const previewRef = useRef<HTMLDivElement>(null);
 
   // Fallbacks for static values (use blank/null for new fields)
+    // Filtered data
   const clientName = data.clientName ?? "MIRAJ ENTERTAINMENT LIMITED";
   const clientAddress = data.clientAddress ?? "3RD, 2 ACME PLAZA, KURLA ROAD, OPP SANGAM BLDG CINEMA\nANDHERI EAST, MUMBAI, MAHARASHTRA, 400059";
   const panNo = data.panNo ?? "AAFCM5147R";

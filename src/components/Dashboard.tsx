@@ -36,6 +36,7 @@ const Dashboard = ({ onLogout }: { onLogout?: () => void }) => {
   }, []);
 
   // Filtered data
+    // Filtered data
   const filteredInvoices = invoices.filter(inv => {
     const clientName = inv.data?.clientName || inv.clientName || '';
     const invoiceNo = inv.data?.invoiceNo || inv.invoiceNo || '';

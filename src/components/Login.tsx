@@ -12,6 +12,7 @@ const Login = ({ onLogin }: { onLogin: () => void }) => {
 
   useEffect(() => {
     // Autofill if remembered
+      // Filtered data
     if (typeof window !== "undefined") {
       const remembered = localStorage.getItem("rememberMe");
       if (remembered === "true") {

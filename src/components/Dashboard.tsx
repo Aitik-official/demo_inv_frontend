@@ -49,7 +49,8 @@ const Dashboard = ({ onLogout }: { onLogout?: () => void }) => {
   // Get invoice data for InvoicePreview
   const getInvoiceData = (inv: any) => ({
     ...(inv.data || {}),
-    invoiceId: inv.invoiceId // always include backend id for preview
+    invoiceId: inv.invoiceId, // always include backend id for preview
+    invoiceNo: inv.invoiceNo || inv.invoiceId // Use invoiceNo from backend or fallback to invoiceId
   });
 
   // Save handler for EditPreview (update invoice in DB)

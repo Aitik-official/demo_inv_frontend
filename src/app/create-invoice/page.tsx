@@ -62,7 +62,11 @@ export default function CreateInvoicePage() {
         const { invoiceIds } = await res.json();
         console.log('Uploaded invoice IDs:', invoiceIds);
         const newBackendInvoices = backendAll.filter((inv: { invoiceId: string }) => invoiceIds.includes(inv.invoiceId));
-        setBackendInvoices(newBackendInvoices.map((inv: { data: any, invoiceId: string }) => ({ ...inv.data, invoiceId: inv.invoiceId })));
+        setBackendInvoices(newBackendInvoices.map((inv: { data: any, invoiceId: string, invoiceNo?: string }) => ({ 
+          ...inv.data, 
+          invoiceId: inv.invoiceId,
+          invoiceNo: inv.invoiceNo || inv.invoiceId // Use invoiceNo from backend or fallback to invoiceId
+        })));
         setSelectedIdx(0);
         setShowPreview(true);
       }
@@ -184,7 +188,7 @@ export default function CreateInvoicePage() {
                     onChange={e => { e.stopPropagation(); handleSelectOne(idx, e.target.checked); }}
                     onClick={e => e.stopPropagation()}
                   />
-                  <span>{inv["Invoice No"] || inv["clientName"] || `Invoice #${idx + 1}`}</span>
+                  <span>{inv["Invoice No"] || inv["invoiceNo"] || inv["clientName"] || `Invoice #${idx + 1}`}</span>
                 </div>
                 <button
                   className="ml-2 bg-orange-500 hover:bg-orange-700 text-white font-bold px-2 py-1 rounded text-xs shadow"
@@ -202,7 +206,8 @@ export default function CreateInvoicePage() {
             previewSource === 'backend' && backendInvoices.length > 0 ? (
               <InvoicePreview data={{
                 ...backendInvoices[selectedIdx],
-                invoiceId: backendInvoices[selectedIdx]?.invoiceId
+                invoiceId: backendInvoices[selectedIdx]?.invoiceId,
+                invoiceNo: backendInvoices[selectedIdx]?.invoiceNo || backendInvoices[selectedIdx]?.invoiceId // Use invoiceNo or fallback
               }} />
             ) : invoices.length > 0 ? (
               <InvoicePreview data={invoices[selectedIdx]} />

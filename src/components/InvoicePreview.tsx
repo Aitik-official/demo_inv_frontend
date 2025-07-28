@@ -90,6 +90,7 @@ interface InvoiceData {
   placeOfService?: string;
   businessTerritory?: string;
   invoiceNo?: string;
+  "Invoice No"?: string; // Add Excel column name
   invoiceDate?: string;
   movieName?: string;
   movieVersion?: string;
@@ -148,7 +149,7 @@ const InvoicePreview = ({ data = {} as InvoiceData, showDownloadButton = true, i
   const placeOfService = data.placeOfService ?? "MAHARASHTRA";
   const businessTerritory = data.businessTerritory ?? "MUMBAI";
   // Use invoiceId or invoiceNo for Invoice No, with fallback
-  const invoiceNo = data.invoiceId || data.invoiceNo;
+  const invoiceNo = data.invoiceId || data.invoiceNo || data["Invoice No"] || "INV001";
   const invoiceDate = data.invoiceDate ?? "23/06/2025";
   const movieName = data.movieName ?? "NARIVETTA";
   const movieVersion = data.movieVersion ?? "2D";

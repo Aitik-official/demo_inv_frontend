@@ -17,6 +17,8 @@ export default function CreateInvoicePage() {
   const [previewSource, setPreviewSource] = useState<'frontend' | 'backend'>('frontend'); // NEW
   const [selectedInvoices, setSelectedInvoices] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [isDataUploaded, setIsDataUploaded] = useState(false); // Track if data has been uploaded
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false); // Show confirmation dialog
 
   // Handler to receive invoices and share/gst from InvoiceForm
   const handleFormChange = (data: any[]) => {
@@ -30,6 +32,7 @@ export default function CreateInvoicePage() {
     }
     setSelectedInvoices([]);
     setSelectAll(false);
+    setIsDataUploaded(false); // Reset upload status when new data is loaded
   };
 
   // New: Upload Excel and invoice data to backend
@@ -69,6 +72,7 @@ export default function CreateInvoicePage() {
         })));
         setSelectedIdx(0);
         setShowPreview(true);
+        setIsDataUploaded(true); // Mark data as uploaded
       }
     } catch (err) {
       console.error('Upload error:', err);
@@ -79,6 +83,12 @@ export default function CreateInvoicePage() {
     // Show preview immediately with frontend data
     setShowPreview(true);
     setPreviewSource('frontend');
+    
+    // Check if data has already been uploaded
+    if (isDataUploaded) {
+      setShowConfirmDialog(true);
+      return;
+    }
     
     // Then upload to backend and update
     await uploadToBackend();
@@ -115,7 +125,9 @@ export default function CreateInvoicePage() {
     const x = (pageWidth - pdfWidth) / 2;
     const y = 40;
     pdf.addImage(imgData, "PNG", x, y, pdfWidth, pdfHeight);
-    pdf.save(`Invoice_${inv.invoiceNo || inv.invoiceId || idx + 1}.pdf`);
+    // Get the exact invoice number that will be displayed
+    const exactInvoiceNo = inv.invoiceId || inv.invoiceNo || inv["Invoice No"] || `INV${idx + 1}`;
+    pdf.save(`Invoice_${exactInvoiceNo}.pdf`);
     reactRoot.unmount();
     document.body.removeChild(hiddenDiv);
   };
@@ -145,6 +157,18 @@ export default function CreateInvoicePage() {
       setSelectedInvoices(prev => prev.filter(i => i !== idx));
       setSelectAll(false);
     }
+  };
+
+  // Handle duplicate upload confirmation
+  const handleConfirmDuplicateUpload = async () => {
+    setShowConfirmDialog(false);
+    await uploadToBackend();
+    setPreviewSource('backend');
+  };
+
+  // Handle cancel duplicate upload
+  const handleCancelDuplicateUpload = () => {
+    setShowConfirmDialog(false);
   };
 
   return (
@@ -221,12 +245,42 @@ export default function CreateInvoicePage() {
         </section>
         {/* Right: InvoiceForm Sidebar */}
         <aside className="w-80 bg-white border-l border-gray-200 flex flex-col items-center p-6">
-          <InvoiceForm onChange={handleFormChange} onPreview={handlePreviewClick} />
+          <InvoiceForm 
+            onChange={handleFormChange} 
+            onPreview={handlePreviewClick} 
+            isDataUploaded={isDataUploaded}
+          />
         </aside>
       </main>
       <footer className="bg-white shadow p-4 text-center text-xs text-gray-500">
         &copy; {new Date().getFullYear()} Invoice Management. All rights reserved.
       </footer>
+
+      {/* Confirmation Dialog */}
+      {showConfirmDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md mx-4 shadow-xl">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Duplicate Upload Warning</h3>
+            <p className="text-gray-600 mb-6">
+              This data has already been uploaded to the database. Uploading again will create duplicate invoices with new invoice numbers. Do you want to proceed?
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={handleCancelDuplicateUpload}
+                className="px-4 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-50 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmDuplicateUpload}
+                className="px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 transition"
+              >
+                Upload Again
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 } 

@@ -278,7 +278,9 @@ const EditPreview = ({ data = defaultInvoice, onChange, showDownloadButton = tru
     const x = (pageWidth - pdfWidth) / 2;
     const y = 40;
     pdf.addImage(imgData, "PNG", x, y, pdfWidth, pdfHeight);
-    pdf.save(`Invoice_${invoice.invoiceNo || invoice.invoiceId || 'unknown'}.pdf`);
+    // Get the exact invoice number that will be displayed
+    const exactInvoiceNo = invoice.invoiceNo || invoice.invoiceId || "INV001";
+    pdf.save(`Invoice_${exactInvoiceNo}.pdf`);
     // Clean up
     reactRoot.unmount();
     document.body.removeChild(hiddenDiv);
@@ -542,7 +544,10 @@ const EditPreview = ({ data = defaultInvoice, onChange, showDownloadButton = tru
               <img src="/inovice_formatting/Stamp_mum.png" alt="Stamp" style={{ width: 120, height: 120, objectFit: 'contain' }} />
             </div>
             <div className="text-right" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'flex-end' }}>
-              <div className="font-bold" style={{ fontSize: 15, marginBottom: 40 }}><input className="border-b border-dashed border-gray-400 focus:border-orange-500 outline-none w-64 ml-6" value={invoice.signatory} onChange={e => updateField('signatory', e.target.value)} /></div>
+              <div className="font-bold" style={{ fontSize: 15, marginBottom: 8 }}><input className="border-b border-dashed border-gray-400 focus:border-orange-500 outline-none w-64 ml-6" value={invoice.signatory} onChange={e => updateField('signatory', e.target.value)} /></div>
+              <div style={{ marginBottom: 8 }}>
+                <img src="/inovice_formatting/sign.png" alt="Signature" style={{ width: '120px', height: '60px', objectFit: 'contain' }} />
+              </div>
               <div className="italic" style={{ fontSize: 13 }}>(Authorised Signatory)</div>
             </div>
           </div>

@@ -218,10 +218,17 @@ const InvoicePreview = ({ data = {} as InvoiceData, showDownloadButton = true, i
     hiddenDiv.style.background = '#fff';
     document.body.appendChild(hiddenDiv);
 
+    // Create data with the exact same invoice number that was calculated for preview
+    const pdfData = {
+      ...data,
+      invoiceNo: invoiceNo, // Use the exact same invoice number from preview
+      invoiceId: invoiceNo  // Ensure invoiceId is also set to the same value
+    };
+
     // Render InvoicePreview into hiddenDiv
     const reactRoot = createRoot(hiddenDiv);
     reactRoot.render(
-      <InvoicePreview data={data} showDownloadButton={false} isPdfExport={true} />
+      <InvoicePreview data={pdfData} showDownloadButton={false} isPdfExport={true} />
     );
 
     // Wait for render and images to load
@@ -240,7 +247,7 @@ const InvoicePreview = ({ data = {} as InvoiceData, showDownloadButton = true, i
     const x = (pageWidth - pdfWidth) / 2;
     const y = 40;
     pdf.addImage(imgData, "PNG", x, y, pdfWidth, pdfHeight);
-    pdf.save(`Invoice_${data.invoiceNo || data.invoiceId || 'unknown'}.pdf`);
+    pdf.save(`Invoice_${invoiceNo}.pdf`); // Use the exact same invoice number
 
     // Clean up
     reactRoot.unmount();
@@ -567,7 +574,10 @@ const InvoicePreview = ({ data = {} as InvoiceData, showDownloadButton = true, i
                 <img src="/inovice_formatting/Stamp_mum.png" alt="Stamp" style={{ width: '120px', height: '120px', objectFit: 'contain' }} />
               </div>
               <div className="text-right" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'flex-end' }}>
-                <div className="font-bold" style={{ fontSize: 15, marginBottom: 40 }}>{signatory}</div>
+                <div className="font-bold" style={{ fontSize: 15, marginBottom: 8 }}>{signatory}</div>
+                <div style={{ marginBottom: 8 }}>
+                  <img src="/inovice_formatting/sign.png" alt="Signature" style={{ width: '120px', height: '60px', objectFit: 'contain' }} />
+                </div>
                 <div className="italic" style={{ fontSize: 13 }}>(Authorised Signatory)</div>
               </div>
             </div>

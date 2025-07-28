@@ -113,7 +113,10 @@ const Dashboard = ({ onLogout }: { onLogout?: () => void }) => {
     const x = (pageWidth - pdfWidth) / 2;
     const y = 40;
     pdf.addImage(imgData, 'PNG', x, y, pdfWidth, pdfHeight);
-    pdf.save(`Invoice_${inv.data?.invoiceNo || inv.data?.invoiceId || inv.invoiceNo || inv.invoiceId}.pdf`);
+    // Get the exact invoice number that will be displayed
+    const invoiceData = getInvoiceData(inv);
+    const exactInvoiceNo = invoiceData.invoiceId || invoiceData.invoiceNo || invoiceData["Invoice No"] || "INV001";
+    pdf.save(`Invoice_${exactInvoiceNo}.pdf`);
     reactRoot.unmount();
     document.body.removeChild(hiddenDiv);
   };

@@ -566,10 +566,10 @@ export default function CreateInvoicePage() {
             <span className="text-xs text-gray-500">{selectedInvoices.length} selected</span>
           </div>
           <div className="flex-1 overflow-y-auto">
-            {(previewSource === 'backend' ? backendInvoices : invoices).length === 0 && (
+            {(previewSource === 'backend' && backendInvoices.length > 0 ? backendInvoices : invoices).length === 0 && (
               <div className="p-4 text-xs text-gray-400">No invoices loaded.</div>
             )}
-            {(previewSource === 'backend' ? backendInvoices : invoices).map((inv, idx) => (
+            {(previewSource === 'backend' && backendInvoices.length > 0 ? backendInvoices : invoices).map((inv, idx) => (
               <div
                 key={idx}
                 className={`cursor-pointer px-4 py-3 border-b text-sm transition-all duration-150 rounded-md my-2 mx-2 font-medium shadow-sm ${selectedIdx === idx ? "bg-orange-200 font-bold text-orange-900 ring-2 ring-orange-400" : "hover:bg-orange-50 hover:shadow-md text-gray-800"}`}

@@ -17,12 +17,17 @@ const Dashboard = ({ onLogout }: { onLogout?: () => void }) => {
   // Memoize invoice data for preview
   const memoizedInvoiceData = useMemo(() => {
     if (!selectedInvoice) return {};
-    const data = selectedInvoice.data || {};
-    return {
-      ...data,
-      invoiceId: selectedInvoice.invoiceId,
-      invoiceNo: selectedInvoice.invoiceNo || selectedInvoice.invoiceId
-    };
+    try {
+      const data = selectedInvoice.data || {};
+      return {
+        ...data,
+        invoiceId: selectedInvoice.invoiceId || '',
+        invoiceNo: selectedInvoice.invoiceNo || selectedInvoice.invoiceId || ''
+      };
+    } catch (error) {
+      console.error('Error processing invoice data:', error);
+      return {};
+    }
   }, [selectedInvoice]);
 
 

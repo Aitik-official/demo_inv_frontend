@@ -142,52 +142,52 @@ const InvoicePreview = ({ data = {} as InvoiceData, showDownloadButton = true, i
   const previewRef = useRef<HTMLDivElement>(null);
 
   // Fallbacks for static values (use blank/null for new fields)
-    // Filtered data
-  const clientName = data.clientName ?? "MIRAJ ENTERTAINMENT LIMITED";
-  const clientAddress = data.clientAddress ?? "3RD, 2 ACME PLAZA, KURLA ROAD, OPP SANGAM BLDG CINEMA\nANDHERI EAST, MUMBAI, MAHARASHTRA, 400059";
-  const panNo = data.panNo ?? "AAFCM5147R";
-  const gstinNo = data.gstinNo ?? "27AAFCM5147R1ZP";
-  const property = data.property ?? "Miraj Cinemas Dattani";
-  const centre = data.centre ?? "MUMBAI";
-  const placeOfService = data.placeOfService ?? "MAHARASHTRA";
-  const businessTerritory = data.businessTerritory ?? "MUMBAI";
+  // Filtered data
+  const clientName = data?.clientName ?? "MIRAJ ENTERTAINMENT LIMITED";
+  const clientAddress = data?.clientAddress ?? "3RD, 2 ACME PLAZA, KURLA ROAD, OPP SANGAM BLDG CINEMA\nANDHERI EAST, MUMBAI, MAHARASHTRA, 400059";
+  const panNo = data?.panNo ?? "AAFCM5147R";
+  const gstinNo = data?.gstinNo ?? "27AAFCM5147R1ZP";
+  const property = data?.property ?? "Miraj Cinemas Dattani";
+  const centre = data?.centre ?? "MUMBAI";
+  const placeOfService = data?.placeOfService ?? "MAHARASHTRA";
+  const businessTerritory = data?.businessTerritory ?? "MUMBAI";
   // Use ONLY Excel invoice number, show dash if not provided
-  const invoiceNo = data["Invoice No"] || "-";
-  const invoiceDate = data.invoiceDate ?? "23/06/2025";
-  const movieName = data.movieName ?? "NARIVETTA";
-  const movieVersion = data.movieVersion ?? "2D";
-  const language = data.language ?? "MALAYALAM";
-  const screenFormat = data.screenFormat ?? "1";
-  const week = data.week ?? "1";
-  const releaseWeek = data.releaseWeek ?? week;
-  const cinemaWeek = data.cinemaWeek ?? "1";
-  const screeningFrom = data.screeningFrom ?? "2025-05-23";
-  const screeningTo = data.screeningTo ?? "2025-05-29";
-  const screeningDateFrom = data.screeningDateFrom ?? screeningFrom;
-  const screeningDateTo = data.screeningDateTo ?? screeningTo;
-  const hsnSacCode = data.hsnSacCode ?? "997332";
-  const description = data.description ?? "Theatrical Exhibition Rights";
-  const distributionPercent = safeNumber(data.share ?? data.distributionPercent ?? 45);
-  const gstType = data.gstType ?? 'CGST/SGST';
-  const gstRate = safeNumber(data.gstRate ?? 18);
-  const table = data.table ?? [];
-  const showTax = data.showTax ?? 0;
-  const otherDeduction = data.otherDeduction ?? 0;
-  const totalShow = data.totalShow ?? 0;
-  const totalAud = data.totalAud ?? 0;
-  const totalCollection = data.totalCollection ?? 0;
-  const cgstRate = data.cgstRate ?? "9";
-  const sgstRate = data.sgstRate ?? "9";
-  const taxType = data.taxType ?? "GST";
-  const remark = data.remark ?? "";
-  const terms = data.terms ?? [];
-  const signatory = data.signatory ?? "For FIRST FILM STUDIOS LLP";
-  const regNo = data.regNo ?? "ACH-2259";
-  const firmName = data.firmName ?? "FIRST FILM STUDIOS LLP";
-  const address = data.address ?? "26-104, RIDDHI SIDHI, CHS, CSR COMPLEX, OLD MHADA, KANDIVALI WEST, MUMBAI - 400067, MAHARASHTRA";
-  const gst = data.gst ?? "27AAJFF7915J1Z1";
-  const pan = data.pan ?? "AAJFF7915J";
-  const email = data.email ?? "info@firstfilmstudios.com";
+  const invoiceNo = data?.["Invoice No"] || "-";
+  const invoiceDate = data?.invoiceDate ?? "23/06/2025";
+  const movieName = data?.movieName ?? "NARIVETTA";
+  const movieVersion = data?.movieVersion ?? "2D";
+  const language = data?.language ?? "MALAYALAM";
+  const screenFormat = data?.screenFormat ?? "1";
+  const week = data?.week ?? "1";
+  const releaseWeek = data?.releaseWeek ?? week;
+  const cinemaWeek = data?.cinemaWeek ?? "1";
+  const screeningFrom = data?.screeningFrom ?? "2025-05-23";
+  const screeningTo = data?.screeningTo ?? "2025-05-29";
+  const screeningDateFrom = data?.screeningDateFrom ?? screeningFrom;
+  const screeningDateTo = data?.screeningDateTo ?? screeningTo;
+  const hsnSacCode = data?.hsnSacCode ?? "997332";
+  const description = data?.description ?? "Theatrical Exhibition Rights";
+  const distributionPercent = safeNumber(data?.share ?? data?.distributionPercent ?? 45);
+  const gstType = data?.gstType ?? 'CGST/SGST';
+  const gstRate = safeNumber(data?.gstRate ?? 18);
+  const table = data?.table ?? [];
+  const showTax = data?.showTax ?? 0;
+  const otherDeduction = data?.otherDeduction ?? 0;
+  const totalShow = data?.totalShow ?? 0;
+  const totalAud = data?.totalAud ?? 0;
+  const totalCollection = data?.totalCollection ?? 0;
+  const cgstRate = data?.cgstRate ?? "9";
+  const sgstRate = data?.sgstRate ?? "9";
+  const taxType = data?.taxType ?? "GST";
+  const remark = data?.remark ?? "";
+  const terms = data?.terms ?? [];
+  const signatory = data?.signatory ?? "For FIRST FILM STUDIOS LLP";
+  const regNo = data?.regNo ?? "ACH-2259";
+  const firmName = data?.firmName ?? "FIRST FILM STUDIOS LLP";
+  const address = data?.address ?? "26-104, RIDDHI SIDHI, CHS, CSR COMPLEX, OLD MHADA, KANDIVALI WEST, MUMBAI - 400067, MAHARASHTRA";
+  const gst = data?.gst ?? "27AAJFF7915J1Z1";
+  const pan = data?.pan ?? "AAJFF7915J";
+  const email = data?.email ?? "info@firstfilmstudios.com";
 
   // Format screening dates
   const formatDate = (d: string) => {
@@ -220,6 +220,9 @@ const InvoicePreview = ({ data = {} as InvoiceData, showDownloadButton = true, i
     return dates;
   };
 
+  // Use table from Excel data
+  const originalTableRows = Array.isArray(table) ? table : [];
+
   // Generate table rows with proper date format - show ALL days between screening dates
   const generateTableRows = (): Array<{date: string; show: number; aud: number; collection: number; deduction: string; deductionAmt: number}> => {
     const dateRange = generateDateRange(screeningDateFrom || screeningFrom, screeningDateTo || screeningTo);
@@ -230,13 +233,15 @@ const InvoicePreview = ({ data = {} as InvoiceData, showDownloadButton = true, i
     
     // Create a map of existing data by date for quick lookup
     const existingDataMap = new Map();
-    originalTableRows.forEach(row => {
-      if (row.date) {
-        // Normalize date format for comparison
-        const normalizedDate = row.date.replace(/\//g, '-');
-        existingDataMap.set(normalizedDate, row);
-      }
-    });
+    if (Array.isArray(originalTableRows)) {
+      originalTableRows.forEach(row => {
+        if (row && row.date) {
+          // Normalize date format for comparison
+          const normalizedDate = row.date.replace(/\//g, '-');
+          existingDataMap.set(normalizedDate, row);
+        }
+      });
+    }
     
     // Create new table rows with ALL dates between screening dates
     return dateRange.map((date) => {
@@ -510,8 +515,6 @@ const InvoicePreview = ({ data = {} as InvoiceData, showDownloadButton = true, i
     }
   };
 
-  // Use table from Excel data
-  const originalTableRows = Array.isArray(table) ? table : [];
   const tableRows = generateTableRows();
 
   // Calculate totals from table rows - ALWAYS calculate from actual data
